@@ -5,16 +5,19 @@ description: Access, search, and summarize content from a technical book collect
 
 # Technical Librarian
 
-Expertly navigates a collection of technical PDFs to provide cited, deep-dive answers to software engineering questions.
+Expertly navigates a collection of technical PDFs to provide cited, deep-dive answers. This skill uses an "On-Demand" fetching strategy to minimize disk usage.
 
 ## Core Mandates
-1. **Bootstrap First:** The technical bookshelf is sourced from `https://github.com/kingnathanal/technical-bookshelf.git`. Check if a local clone exists (defaulting to `~/technical-bookshelf` or a path saved in memory). If it does not exist, use `run_shell_command` to clone it to `~/technical-bookshelf` before proceeding. 
+1. **Bootstrap (Meta-only):** The technical bookshelf is at `https://github.com/kingnathanal/technical-bookshelf.git`. 
+   - If the directory `~/technical-bookshelf` doesn't exist, clone it using: `GIT_LFS_SKIP_SMUDGE=1 git clone https://github.com/kingnathanal/technical-bookshelf.git ~/technical-bookshelf`.
+   - This ensures only the filenames are downloaded initially, keeping the clone size tiny.
 2. **Search Strategy:**
-   - Use `list_directory` or `ls` on the local bookshelf directory to identify the most relevant book titles.
-   - Use `grep_search` with the `--fixed-strings` flag on the library directory to find specific terms across all books.
-   - Prioritize files under 100MB for faster extraction.
-3. **Citations:** Always state which book (and page number if possible) the information came from.
-4. **Context Management:** When reading a PDF, use `read_file` to extract only the necessary sections.
+   - Use `ls` on the bookshelf directory to identify relevant titles.
+   - To search *inside* books without downloading them all, prioritize the most likely candidates based on filenames.
+3. **On-Demand Fetching:**
+   - Before reading a PDF with `read_file`, check its size. If it is < 1KB (meaning it is just an LFS pointer), run `git lfs pull --include="[filename].pdf"` to download only that specific book.
+4. **Citations:** Always state which book the information came from.
+5. **Context Management:** Use `read_file` to extract only the necessary sections.
 
 ## Example Triggers
 - "What does my library say about Hexagonal Architecture?"
