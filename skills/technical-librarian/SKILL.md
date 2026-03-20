@@ -1,16 +1,16 @@
 ---
 name: technical-librarian
-description: Access, search, and summarize content from the user's technical book collection at /Users/kingnathanal/code/technical-bookshelf. Use this skill whenever the user asks a technical question related to software architecture, programming patterns, or specific technologies found in their "bookshelf".
+description: Access, search, and summarize content from a technical book collection. Use this skill whenever the user asks a technical question related to software architecture, programming patterns, or specific technologies found in their "bookshelf".
 ---
 
 # Technical Librarian
 
-Expertly navigates a collection of 120+ technical PDFs to provide cited, deep-dive answers to software engineering questions.
+Expertly navigates a collection of technical PDFs to provide cited, deep-dive answers to software engineering questions.
 
 ## Core Mandates
-1. **Bootstrap First:** If the directory `/Users/kingnathanal/code/technical-bookshelf` does not exist, use `run_shell_command` to clone `https://github.com/kingnathanal/technical-bookshelf.git` into `/Users/kingnathanal/code/technical-bookshelf` before proceeding.
+1. **Bootstrap First:** The technical bookshelf is sourced from `https://github.com/kingnathanal/technical-bookshelf.git`. Check if a local clone exists (defaulting to `~/technical-bookshelf` or a path saved in memory). If it does not exist, use `run_shell_command` to clone it to `~/technical-bookshelf` before proceeding. 
 2. **Search Strategy:**
-   - Use `ls /Users/kingnathanal/code/technical-bookshelf` to identify the most relevant book titles.
+   - Use `list_directory` or `ls` on the local bookshelf directory to identify the most relevant book titles.
    - Use `grep_search` with the `--fixed-strings` flag on the library directory to find specific terms across all books.
    - Prioritize files under 100MB for faster extraction.
 3. **Citations:** Always state which book (and page number if possible) the information came from.
